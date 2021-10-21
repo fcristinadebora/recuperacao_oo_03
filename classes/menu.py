@@ -1,4 +1,6 @@
 from .ong import Ong
+from .pet import Pet
+
 class Menu:
 
     def __init__(self):
@@ -12,6 +14,9 @@ class Menu:
         print("2 - Listar ONGs")
         print("3 - Editar ONG")
         print("4 - Excluir ONG")
+        print("5 - Cadastrar Pet")
+        print("6 - Mostrar detalhes de ONG")
+        print("7 - Alterar status do Pet")
         print("99 - Encerrar programa")
 
     def ler_operacao(self):
@@ -29,6 +34,12 @@ class Menu:
             self.editar_ong()
         if (operacao == "4"):
             self.excluir_ong()
+        if (operacao == "5"):
+            self.cadastrar_pet()
+        if (operacao == "6"):
+            self.mostrar_detalhes_ong()
+        if (operacao == "7"):
+            self.alterar_status_pet()
         if (operacao == "99"):
             self.encerrar_programa()
 
@@ -58,13 +69,10 @@ class Menu:
     def editar_ong(self):
         print("")
         print(" ---- Editar ONG --- ")
-        self.listar_ongs()
-        ong_para_editar = input("Digite o número da ONG para editar > ")
 
-        try:
-            ong_editando = self._ongs[int(ong_para_editar)]
-        except:
-            print("Não foi possível obter ong")
+        ong_editando = self.selecionar_ong()
+        if (ong_editando == None):
+            return
 
         nome = input("Nome da ONG: ")
         endereco = input("Endereço: ")
@@ -79,11 +87,62 @@ class Menu:
     def excluir_ong(self):
         print("")
         print(" ---- Excluir ONG --- ")
+
+        ong_excluir = self.selecionar_ong()
+        if (ong_excluir == None):
+            return
+
+        self._ongs.remove(ong_excluir)
+
+    def selecionar_ong(self):
         self.listar_ongs()
-        ong_para_excluir = input("Digite o número da ONG para excluir > ")
+        indice_ong = input("Digite o numero da ONG > ")
 
         try:
-            ong_excluir = self._ongs[int(ong_para_excluir)]
-            self._ongs.remove(ong_excluir)
+            ong = self._ongs[int(indice_ong)]
         except:
-            print("Não foi possível excluir ong")
+            print("Ong inválida")
+            return None
+
+        return ong
+
+    def cadastrar_pet(self):
+        print("")
+        print(" ---- Cadastrar Pet --- ")
+
+        ong = self.selecionar_ong()
+        if (ong == None):
+            return
+
+        nome = input("Nome do pet: ")
+        porte = input("Porte: [" + Pet.porte_pequeno + "|" + Pet.porte_medio + "|" + Pet.porte_medio + "]: ")
+
+        pet = Pet(nome)
+        pet.set_porte(porte)
+        ong.add_pet(pet)
+
+    def mostrar_detalhes_ong(self):
+        ong = self.selecionar_ong()
+        if (ong == None):
+            return
+
+        ong.exibir_detalhes()
+
+    def alterar_status_pet(self):
+        ong = self.selecionar_ong()
+        if (ong == None):
+            return
+
+        for indice, pet in enumerate(ong.get_pets()):
+            print(str(indice) + " - " + pet.get_nome())
+
+        indice_pet = input("Digite o numero do Pet > ")
+        try:
+            pets = ong.get_pets()
+            pet = pets[int(indice_pet)]
+        except:
+            print("Pet Inválido")
+            return None
+
+        novo_status = input("Digite o status do pet [" + Pet.status_indisponivel + "|" + Pet.status_disponivel + "|" + Pet.status_adotado + "]: ")
+        pet.set_status(novo_status)
