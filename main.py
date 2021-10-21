@@ -1,4 +1,7 @@
 from classes.menu import Menu
 
 menu = Menu()
-menu.listar_opcoes()
+
+while menu.executando == True:
+    menu.listar_opcoes()
+    menu.executar_operacao()
