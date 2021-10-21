@@ -7,3 +7,15 @@ class Ong:
 
     def get_nome(self):
         return self._nome
+
+    def set_nome(self, nome):
+        self._nome = nome
+
+    def set_endereco(self, endereco):
+        self._endereco = endereco
+
+    def set_telefone(self, telefone):
+        self._telefone = telefone
+
+    def set_nome_responsavel(self, nome_responsavel):
+        self.nome_responsavel = nome_responsavel
