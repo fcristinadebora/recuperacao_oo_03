@@ -36,3 +36,6 @@ class Ong:
 
     def get_pets(self):
         return self._pets
+
+    def remove_pet(self, pet):
+        self._pets.remove(pet)

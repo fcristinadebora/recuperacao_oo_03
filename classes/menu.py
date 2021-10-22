@@ -17,6 +17,7 @@ class Menu:
         print("5 - Cadastrar Pet")
         print("6 - Mostrar detalhes de ONG")
         print("7 - Alterar status do Pet")
+        print("8 - Excluir Pet")
         print("99 - Encerrar programa")
 
     def ler_operacao(self):
@@ -40,6 +41,8 @@ class Menu:
             self.mostrar_detalhes_ong()
         if (operacao == "7"):
             self.alterar_status_pet()
+        if (operacao == "8"):
+            self.excluir_pet()
         if (operacao == "99"):
             self.encerrar_programa()
 
@@ -133,6 +136,25 @@ class Menu:
         if (ong == None):
             return
 
+        pet = self.selecionar_pet(ong)
+        if (pet == None):
+            return
+
+        novo_status = input("Digite o status do pet [" + Pet.status_indisponivel + "|" + Pet.status_disponivel + "|" + Pet.status_adotado + "]: ")
+        pet.set_status(novo_status)
+
+    def excluir_pet(self):
+        ong = self.selecionar_ong()
+        if (ong == None):
+            return
+
+        pet = self.selecionar_pet(ong)
+        if (pet == None):
+            return
+
+        ong.remove_pet(pet)
+
+    def selecionar_pet(self, ong):
         for indice, pet in enumerate(ong.get_pets()):
             print(str(indice) + " - " + pet.get_nome())
 
@@ -144,5 +166,4 @@ class Menu:
             print("Pet Inválido")
             return None
 
-        novo_status = input("Digite o status do pet [" + Pet.status_indisponivel + "|" + Pet.status_disponivel + "|" + Pet.status_adotado + "]: ")
-        pet.set_status(novo_status)
+        return pet
